@@ -17,7 +17,7 @@ from schemas.ldap.directory import (
 from services.ldap.ldap import LDAPService
 from services.ldap.export_directory import fetch_all_ous, build_directory_tree
 
-router = APIRouter(prefix="/directory", tags=["LDAP Directory"])
+router = APIRouter(tags=["LDAP Directory"])
 
 
 def get_ldap_service() -> LDAPService:

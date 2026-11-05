@@ -1,5 +1,17 @@
 from pydantic import BaseModel, EmailStr, Field
-from typing import Self
+
+
+# ==========================================
+# ACTION / STATUS RESPONSE SCHEMA
+# ==========================================
+
+class LDAPActionResponse(BaseModel):
+    """Standard response for mutations like disable, delete, move, or membership actions."""
+    success: bool
+    message: str
+    ldap_code: int = 0
+    details: str | None = None
+
 
 # ==========================================
 # USER SCHEMAS
@@ -16,7 +28,6 @@ class LDAPUser(BaseModel):
     title: str | None = None
     dn: str | None = None
 
-    # LDAP object classes
     object_classes: list[str] = Field(
         default_factory=lambda: [
             "top",
@@ -45,7 +56,6 @@ class LDAPGroupCreate(BaseModel):
     """Schema to create a new group."""
     cn: str = Field(min_length=1, max_length=128, description="Group name")
     description: str | None = None
-    # RFC 2256 groupOfNames requires at least one member DN
     members: list[str] = Field(default_factory=list)
     object_classes: list[str] = Field(
         default_factory=lambda: [
@@ -84,7 +94,7 @@ class LDAPOUCreate(BaseModel):
     name: str = Field(min_length=1, max_length=128, description="OU name (ou)")
     description: str | None = None
     parent_dn: str | None = Field(
-        default=None, 
+        default=None,
         description="Parent DN where the OU will be placed. Defaults to base DN."
     )
     object_classes: list[str] = Field(
@@ -114,27 +124,16 @@ class LDAPMoveObject(BaseModel):
     new_parent_dn: str = Field(min_length=1, description="Target parent OU DN")
 
 
+# ==========================================
+# DIRECTORY SNAPSHOT & TREE SCHEMAS
+# ==========================================
+
 class LDAPDirectorySnapshot(BaseModel):
-    """
-    Representation of an entire LDAP directory snapshot.
-    Useful for backups, directory exports, and batch provisioning.
-    """
-    base_dn: str = Field(
-        default="dc=neuropunk",
-        description="Root Base DN of the directory"
-    )
-    ous: list[LDAPOU] = Field(
-        default_factory=list,
-        description="All Organizational Units in the directory"
-    )
-    users: list[LDAPUser] = Field(
-        default_factory=list,
-        description="All directory user entries"
-    )
-    groups: list[LDAPGroup] = Field(
-        default_factory=list,
-        description="All directory group entries"
-    )
+    """Flat snapshot representing all directory entries."""
+    base_dn: str = Field(default="dc=neuropunk")
+    ous: list[LDAPOU] = Field(default_factory=list)
+    users: list[LDAPUser] = Field(default_factory=list)
+    groups: list[LDAPGroup] = Field(default_factory=list)
 
 
 class LDAPTreeOU(BaseModel):
@@ -142,23 +141,16 @@ class LDAPTreeOU(BaseModel):
     ou: str
     dn: str
     description: str | None = None
-    
-    # Direct children inside this OU
     users: list[LDAPUser] = Field(default_factory=list)
     groups: list[LDAPGroup] = Field(default_factory=list)
-    
-    # Recursive child OUs nested under this OU
-    children_ous: list[Self] = Field(default_factory=list)
+    children_ous: list["LDAPTreeOU"] = Field(default_factory=list)
+
+
+# Resolve the recursive forward reference
+LDAPTreeOU.model_rebuild()
 
 
 class LDAPDirectoryTree(BaseModel):
     """The root of the directory tree."""
     base_dn: str = "dc=neuropunk"
     root_ous: list[LDAPTreeOU] = Field(default_factory=list)
-
-class LDAPActionResponse(BaseModel):
-    """Standard response for mutations like disable, delete, move, or membership actions."""
-    success: bool
-    message: str
-    ldap_code: int = 0
-    details: str | None = None
