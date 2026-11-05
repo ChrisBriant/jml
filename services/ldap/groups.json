@@ -1,0 +1,302 @@
+[
+  {
+    "cn": "eng-backend",
+    "description": "Core Backend Engineering Team",
+    "members": ["uid=alovelace,ou=People,dc=neuropunk", "uid=aturing,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "eng-frontend",
+    "description": "Frontend and UI Engineering Team",
+    "members": ["uid=ghopper,ou=People,dc=neuropunk", "uid=kthompson,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "eng-devops",
+    "description": "Cloud & Site Reliability Engineers",
+    "members": ["uid=dritchie,ou=People,dc=neuropunk", "uid=ltorvalds,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "eng-platform",
+    "description": "Core Platform and Infrastructure",
+    "members": ["uid=bliskov,ou=People,dc=neuropunk", "uid=mhamilton,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "eng-data-pipeline",
+    "description": "Data Pipeline and ETL Engineers",
+    "members": ["uid=jvonneumann,ou=People,dc=neuropunk", "uid=cshannon,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "eng-qa-automation",
+    "description": "Quality Assurance & Test Automation",
+    "members": ["uid=rhamming,ou=People,dc=neuropunk", "uid=edijkstra,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "eng-security-tools",
+    "description": "Internal Security Tooling Engineers",
+    "members": ["uid=kmitnick,ou=People,dc=neuropunk", "uid=bschneier,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "eng-mobile-ios",
+    "description": "iOS Client Engineers",
+    "members": ["uid=swozniak,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "eng-mobile-android",
+    "description": "Android Client Engineers",
+    "members": ["uid=arubin,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "eng-embedded",
+    "description": "Firmware & Embedded Systems",
+    "members": ["uid=jwozniak,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "sec-incident-response",
+    "description": "Incident Response and SOC Analysts",
+    "members": ["uid=kmitnick,ou=People,dc=neuropunk", "uid=dkaminsky,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "sec-appsec",
+    "description": "Application Security & Threat Modeling",
+    "members": ["uid=bschneier,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "sec-iam-admins",
+    "description": "Identity and Access Management Administrators",
+    "members": ["uid=wdiffie,ou=People,dc=neuropunk", "uid=mhellman,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "sec-compliance",
+    "description": "SOC2, ISO27001, and HIPAA Compliance",
+    "members": ["uid=jmorris,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "sec-red-team",
+    "description": "Offensive Security and Pentesting",
+    "members": ["uid=czimmermann,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "ops-it-support-tier1",
+    "description": "IT Helpdesk Tier 1",
+    "members": ["uid=eclarke,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "ops-it-support-tier2",
+    "description": "IT Systems and Workstation Support",
+    "members": ["uid=gboole,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "ops-network-admins",
+    "description": "Corporate Network & VPN Administrators",
+    "members": ["uid=vcerf,ou=People,dc=neuropunk", "uid=rkahn,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "ops-database-admins",
+    "description": "PostgreSQL & OpenLDAP DBAs",
+    "members": ["uid=ecodd,ou=People,dc=neuropunk", "uid=mstonebraker,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "ops-hardware-assets",
+    "description": "Asset Tracking and Logistics",
+    "members": ["uid=cbabbage,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "prod-product-managers",
+    "description": "Core Product Managers",
+    "members": ["uid=sjobs,ou=People,dc=neuropunk", "uid=jdorsey,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "prod-ux-designers",
+    "description": "UI/UX Designers & Researchers",
+    "members": ["uid=dnorman,ou=People,dc=neuropunk", "uid=jive,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "prod-technical-writers",
+    "description": "Documentation and API Reference Writers",
+    "members": ["uid=aknuth,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "prod-analytics",
+    "description": "Product Analytics and Business Intelligence",
+    "members": ["uid=nturing,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "prod-localization",
+    "description": "Internationalization and Localization",
+    "members": ["uid=llampard,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "corp-exec-team",
+    "description": "Executive Leadership Team (C-Suite)",
+    "members": ["uid=alovelace,ou=People,dc=neuropunk", "uid=sjobs,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "corp-hr-leads",
+    "description": "People Ops and HR Managers",
+    "members": ["uid=mcurie,ou=People,dc=neuropunk", "uid=rfranklin,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "corp-legal",
+    "description": "Corporate Legal and General Counsel",
+    "members": ["uid=jbentham,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "corp-finance-payroll",
+    "description": "Payroll and Financial Controllers",
+    "members": ["uid=jkeynes,ou=People,dc=neuropunk", "uid=asmith,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "corp-procurement",
+    "description": "Vendor Management and Purchasing",
+    "members": ["uid=dfoster,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "sales-enterprise-na",
+    "description": "North America Enterprise Sales",
+    "members": ["uid=jcarnegie,ou=People,dc=neuropunk", "uid=jrockefeller,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "sales-enterprise-emea",
+    "description": "EMEA Enterprise Sales",
+    "members": ["uid=crothschild,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "sales-enterprise-apac",
+    "description": "APAC Enterprise Sales",
+    "members": ["uid=mshibusawa,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "sales-solutions-architects",
+    "description": "Pre-Sales Technical Solutions Architects",
+    "members": ["uid=tlamb,ou=People,dc=neuropunk", "uid=hhoover,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "sales-customer-success",
+    "description": "Post-Sales Customer Success Managers",
+    "members": ["uid=dcarnegie,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "mkt-growth",
+    "description": "Growth Marketing and Acquisition",
+    "members": ["uid=ebarnays,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "mkt-content",
+    "description": "Content Creation, Editorial, and Social Media",
+    "members": ["uid=mogilvy,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "mkt-brand-creative",
+    "description": "Brand Design and Video Production",
+    "members": ["uid=pcrews,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "mkt-events",
+    "description": "Event Planning and Field Marketing",
+    "members": ["uid=pbarnum,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "mkt-pr-comms",
+    "description": "Public Relations and Press Relations",
+    "members": ["uid=ilee,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "vpn-general-access",
+    "description": "Standard Corporate VPN Access",
+    "members": ["uid=alovelace,ou=People,dc=neuropunk", "uid=aturing,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "vpn-production-access",
+    "description": "Production Bastion VPN Access",
+    "members": ["uid=dritchie,ou=People,dc=neuropunk", "uid=ltorvalds,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "git-org-owners",
+    "description": "VCS Organization Administrators",
+    "members": ["uid=ltorvalds,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "aws-production-admins",
+    "description": "AWS Production Account Full Access",
+    "members": ["uid=dritchie,ou=People,dc=neuropunk", "uid=bliskov,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "aws-staging-developers",
+    "description": "AWS Staging Sandbox Full Access",
+    "members": ["uid=alovelace,ou=People,dc=neuropunk", "uid=ghopper,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "k8s-cluster-admins",
+    "description": "Kubernetes Cluster Administrator Roles",
+    "members": ["uid=ltorvalds,ou=People,dc=neuropunk", "uid=kthompson,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "vault-secret-managers",
+    "description": "HashiCorp Vault Master Operator Access",
+    "members": ["uid=wdiffie,ou=People,dc=neuropunk", "uid=mhellman,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "ldap-directory-readers",
+    "description": "Read-Only Access for Directory Lookups",
+    "members": ["uid=eclarke,ou=People,dc=neuropunk", "uid=gboole,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "confluence-space-admins",
+    "description": "Wiki and Documentation Administrators",
+    "members": ["uid=aknuth,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  },
+  {
+    "cn": "all-contractors",
+    "description": "External Contingent Workers and Contractors",
+    "members": ["uid=ckozlov,ou=People,dc=neuropunk", "uid=mvolkov,ou=People,dc=neuropunk"],
+    "object_classes": ["top", "groupOfNames"]
+  }
+]

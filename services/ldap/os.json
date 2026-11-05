@@ -1,0 +1,62 @@
+[
+  {
+    "name": "People",
+    "description": "Primary organizational unit for user accounts",
+    "parent_dn": "dc=neuropunk",
+    "object_classes": ["top", "organizationalUnit"]
+  },
+  {
+    "name": "Groups",
+    "description": "Primary organizational unit for directory security groups",
+    "parent_dn": "dc=neuropunk",
+    "object_classes": ["top", "organizationalUnit"]
+  },
+  {
+    "name": "ServiceAccounts",
+    "description": "Service accounts and automated system identities",
+    "parent_dn": "dc=neuropunk",
+    "object_classes": ["top", "organizationalUnit"]
+  },
+  {
+    "name": "Engineering",
+    "description": "Software, platform, and infrastructure teams",
+    "parent_dn": "dc=neuropunk",
+    "object_classes": ["top", "organizationalUnit"]
+  },
+  {
+    "name": "Security",
+    "description": "Information security, compliance, and SOC teams",
+    "parent_dn": "dc=neuropunk",
+    "object_classes": ["top", "organizationalUnit"]
+  },
+  {
+    "name": "Operations",
+    "description": "Business operations, IT support, and logistics",
+    "parent_dn": "dc=neuropunk",
+    "object_classes": ["top", "organizationalUnit"]
+  },
+  {
+    "name": "Product",
+    "description": "Product management and UX design teams",
+    "parent_dn": "dc=neuropunk",
+    "object_classes": ["top", "organizationalUnit"]
+  },
+  {
+    "name": "Marketing",
+    "description": "Brand, communications, and customer outreach",
+    "parent_dn": "dc=neuropunk",
+    "object_classes": ["top", "organizationalUnit"]
+  },
+  {
+    "name": "Sales",
+    "description": "Enterprise sales, accounts, and client success",
+    "parent_dn": "dc=neuropunk",
+    "object_classes": ["top", "organizationalUnit"]
+  },
+  {
+    "name": "Finance",
+    "description": "Accounting, payroll, and corporate treasury",
+    "parent_dn": "dc=neuropunk",
+    "object_classes": ["top", "organizationalUnit"]
+  }
+]

@@ -1,0 +1,1002 @@
+[
+  {
+    "uid": "alovelace",
+    "cn": "Ada Lovelace",
+    "sn": "Lovelace",
+    "given_name": "Ada",
+    "mail": "ada.lovelace@neuropunk.org",
+    "department": "Engineering",
+    "title": "Principal Architect",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "aturing",
+    "cn": "Alan Turing",
+    "sn": "Turing",
+    "given_name": "Alan",
+    "mail": "alan.turing@neuropunk.org",
+    "department": "Engineering",
+    "title": "Distinguished Scientist",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "ghopper",
+    "cn": "Grace Hopper",
+    "sn": "Hopper",
+    "given_name": "Grace",
+    "mail": "grace.hopper@neuropunk.org",
+    "department": "Engineering",
+    "title": "Senior Staff Engineer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "kthompson",
+    "cn": "Ken Thompson",
+    "sn": "Thompson",
+    "given_name": "Ken",
+    "mail": "ken.thompson@neuropunk.org",
+    "department": "Engineering",
+    "title": "Principal Systems Engineer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "dritchie",
+    "cn": "Dennis Ritchie",
+    "sn": "Ritchie",
+    "given_name": "Dennis",
+    "mail": "dennis.ritchie@neuropunk.org",
+    "department": "Engineering",
+    "title": "Site Reliability Architect",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "ltorvalds",
+    "cn": "Linus Torvalds",
+    "sn": "Torvalds",
+    "given_name": "Linus",
+    "mail": "linus.torvalds@neuropunk.org",
+    "department": "Engineering",
+    "title": "Kernel Engineer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "bliskov",
+    "cn": "Barbara Liskov",
+    "sn": "Liskov",
+    "given_name": "Barbara",
+    "mail": "barbara.liskov@neuropunk.org",
+    "department": "Engineering",
+    "title": "Platform Architect",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "mhamilton",
+    "cn": "Margaret Hamilton",
+    "sn": "Hamilton",
+    "given_name": "Margaret",
+    "mail": "margaret.hamilton@neuropunk.org",
+    "department": "Engineering",
+    "title": "Director of Software Reliability",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "jvonneumann",
+    "cn": "John von Neumann",
+    "sn": "von Neumann",
+    "given_name": "John",
+    "mail": "john.vonneumann@neuropunk.org",
+    "department": "Engineering",
+    "title": "Chief Computing Scientist",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "cshannon",
+    "cn": "Claude Shannon",
+    "sn": "Shannon",
+    "given_name": "Claude",
+    "mail": "claude.shannon@neuropunk.org",
+    "department": "Engineering",
+    "title": "Data Architect",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "rhamming",
+    "cn": "Richard Hamming",
+    "sn": "Hamming",
+    "given_name": "Richard",
+    "mail": "richard.hamming@neuropunk.org",
+    "department": "Engineering",
+    "title": "QA Lead",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "edijkstra",
+    "cn": "Edsger Dijkstra",
+    "sn": "Dijkstra",
+    "given_name": "Edsger",
+    "mail": "edsger.dijkstra@neuropunk.org",
+    "department": "Engineering",
+    "title": "Algorithm Engineer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "kmitnick",
+    "cn": "Kevin Mitnick",
+    "sn": "Mitnick",
+    "given_name": "Kevin",
+    "mail": "kevin.mitnick@neuropunk.org",
+    "department": "Security",
+    "title": "Lead Security Analyst",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "bschneier",
+    "cn": "Bruce Schneier",
+    "sn": "Schneier",
+    "given_name": "Bruce",
+    "mail": "bruce.schneier@neuropunk.org",
+    "department": "Security",
+    "title": "Chief Security Architect",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "swozniak",
+    "cn": "Steve Wozniak",
+    "sn": "Wozniak",
+    "given_name": "Steve",
+    "mail": "steve.wozniak@neuropunk.org",
+    "department": "Engineering",
+    "title": "Hardware Systems Fellow",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "arubin",
+    "cn": "Andy Rubin",
+    "sn": "Rubin",
+    "given_name": "Andy",
+    "mail": "andy.rubin@neuropunk.org",
+    "department": "Engineering",
+    "title": "Mobile Platform Lead",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "jwozniak",
+    "cn": "Jack Wozniak",
+    "sn": "Wozniak",
+    "given_name": "Jack",
+    "mail": "jack.wozniak@neuropunk.org",
+    "department": "Engineering",
+    "title": "Firmware Engineer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "dkaminsky",
+    "cn": "Dan Kaminsky",
+    "sn": "Kaminsky",
+    "given_name": "Dan",
+    "mail": "dan.kaminsky@neuropunk.org",
+    "department": "Security",
+    "title": "DNS Security Specialist",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "wdiffie",
+    "cn": "Whitfield Diffie",
+    "sn": "Diffie",
+    "given_name": "Whitfield",
+    "mail": "whitfield.diffie@neuropunk.org",
+    "department": "Security",
+    "title": "Cryptographic Engineer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "mhellman",
+    "cn": "Martin Hellman",
+    "sn": "Hellman",
+    "given_name": "Martin",
+    "mail": "martin.hellman@neuropunk.org",
+    "department": "Security",
+    "title": "IAM Security Architect",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "jmorris",
+    "cn": "Robert Morris",
+    "sn": "Morris",
+    "given_name": "Robert",
+    "mail": "robert.morris@neuropunk.org",
+    "department": "Security",
+    "title": "Compliance Analyst",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "czimmermann",
+    "cn": "Phil Zimmermann",
+    "sn": "Zimmermann",
+    "given_name": "Phil",
+    "mail": "phil.zimmermann@neuropunk.org",
+    "department": "Security",
+    "title": "Red Team Specialist",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "eclarke",
+    "cn": "Edmund Clarke",
+    "sn": "Clarke",
+    "given_name": "Edmund",
+    "mail": "edmund.clarke@neuropunk.org",
+    "department": "Operations",
+    "title": "IT Support Engineer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "gboole",
+    "cn": "George Boole",
+    "sn": "Boole",
+    "given_name": "George",
+    "mail": "george.boole@neuropunk.org",
+    "department": "Operations",
+    "title": "Tier 2 Helpdesk Engineer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "vcerf",
+    "cn": "Vint Cerf",
+    "sn": "Cerf",
+    "given_name": "Vint",
+    "mail": "vint.cerf@neuropunk.org",
+    "department": "Operations",
+    "title": "Network Operations Director",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "rkahn",
+    "cn": "Bob Kahn",
+    "sn": "Kahn",
+    "given_name": "Bob",
+    "mail": "bob.kahn@neuropunk.org",
+    "department": "Operations",
+    "title": "Principal Network Engineer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "ecodd",
+    "cn": "Edgar Codd",
+    "sn": "Codd",
+    "given_name": "Edgar",
+    "mail": "edgar.codd@neuropunk.org",
+    "department": "Operations",
+    "title": "Lead Database Administrator",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "mstonebraker",
+    "cn": "Michael Stonebraker",
+    "sn": "Stonebraker",
+    "given_name": "Michael",
+    "mail": "michael.stonebraker@neuropunk.org",
+    "department": "Operations",
+    "title": "Database Systems Architect",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "cbabbage",
+    "cn": "Charles Babbage",
+    "sn": "Babbage",
+    "given_name": "Charles",
+    "mail": "charles.babbage@neuropunk.org",
+    "department": "Operations",
+    "title": "IT Asset Manager",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "sjobs",
+    "cn": "Steve Jobs",
+    "sn": "Jobs",
+    "given_name": "Steve",
+    "mail": "steve.jobs@neuropunk.org",
+    "department": "Product",
+    "title": "Chief Product Officer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "jdorsey",
+    "cn": "Jack Dorsey",
+    "sn": "Dorsey",
+    "given_name": "Jack",
+    "mail": "jack.dorsey@neuropunk.org",
+    "department": "Product",
+    "title": "Group Product Manager",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "dnorman",
+    "cn": "Don Norman",
+    "sn": "Norman",
+    "given_name": "Don",
+    "mail": "don.norman@neuropunk.org",
+    "department": "Product",
+    "title": "VP User Experience",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "jive",
+    "cn": "Jony Ive",
+    "sn": "Ive",
+    "given_name": "Jony",
+    "mail": "jony.ive@neuropunk.org",
+    "department": "Product",
+    "title": "Chief Industrial Designer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "aknuth",
+    "cn": "Donald Knuth",
+    "sn": "Knuth",
+    "given_name": "Donald",
+    "mail": "donald.knuth@neuropunk.org",
+    "department": "Product",
+    "title": "Staff Technical Writer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "nturing",
+    "cn": "Nathan Turing",
+    "sn": "Turing",
+    "given_name": "Nathan",
+    "mail": "nathan.turing@neuropunk.org",
+    "department": "Product",
+    "title": "Lead Product Analyst",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "llampard",
+    "cn": "Leslie Lampard",
+    "sn": "Lampard",
+    "given_name": "Leslie",
+    "mail": "leslie.lampard@neuropunk.org",
+    "department": "Product",
+    "title": "Localization Specialist",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "mcurie",
+    "cn": "Marie Curie",
+    "sn": "Curie",
+    "given_name": "Marie",
+    "mail": "marie.curie@neuropunk.org",
+    "department": "Operations",
+    "title": "Head of People Operations",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "rfranklin",
+    "cn": "Rosalind Franklin",
+    "sn": "Franklin",
+    "given_name": "Rosalind",
+    "mail": "rosalind.franklin@neuropunk.org",
+    "department": "Operations",
+    "title": "HR Business Partner",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "jbentham",
+    "cn": "Jeremy Bentham",
+    "sn": "Bentham",
+    "given_name": "Jeremy",
+    "mail": "jeremy.bentham@neuropunk.org",
+    "department": "Operations",
+    "title": "General Counsel",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "jkeynes",
+    "cn": "John Keynes",
+    "sn": "Keynes",
+    "given_name": "John",
+    "mail": "john.keynes@neuropunk.org",
+    "department": "Finance",
+    "title": "Chief Financial Officer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "asmith",
+    "cn": "Adam Smith",
+    "sn": "Smith",
+    "given_name": "Adam",
+    "mail": "adam.smith@neuropunk.org",
+    "department": "Finance",
+    "title": "Corporate Controller",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "dfoster",
+    "cn": "David Foster",
+    "sn": "Foster",
+    "given_name": "David",
+    "mail": "david.foster@neuropunk.org",
+    "department": "Finance",
+    "title": "Procurement Director",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "jcarnegie",
+    "cn": "Andrew Carnegie",
+    "sn": "Carnegie",
+    "given_name": "Andrew",
+    "mail": "andrew.carnegie@neuropunk.org",
+    "department": "Sales",
+    "title": "VP Enterprise Sales NA",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "jrockefeller",
+    "cn": "John Rockefeller",
+    "sn": "Rockefeller",
+    "given_name": "John",
+    "mail": "john.rockefeller@neuropunk.org",
+    "department": "Sales",
+    "title": "Strategic Account Executive",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "crothschild",
+    "cn": "Clara Rothschild",
+    "sn": "Rothschild",
+    "given_name": "Clara",
+    "mail": "clara.rothschild@neuropunk.org",
+    "department": "Sales",
+    "title": "VP Enterprise Sales EMEA",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "mshibusawa",
+    "cn": "Eiichi Shibusawa",
+    "sn": "Shibusawa",
+    "given_name": "Eiichi",
+    "mail": "eiichi.shibusawa@neuropunk.org",
+    "department": "Sales",
+    "title": "Regional Director APAC",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "tlamb",
+    "cn": "Thomas Lamb",
+    "sn": "Lamb",
+    "given_name": "Thomas",
+    "mail": "thomas.lamb@neuropunk.org",
+    "department": "Sales",
+    "title": "Principal Solutions Architect",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "hhoover",
+    "cn": "Herbert Hoover",
+    "sn": "Hoover",
+    "given_name": "Herbert",
+    "mail": "herbert.hoover@neuropunk.org",
+    "department": "Sales",
+    "title": "Senior Solutions Engineer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "dcarnegie",
+    "cn": "Dale Carnegie",
+    "sn": "Carnegie",
+    "given_name": "Dale",
+    "mail": "dale.carnegie@neuropunk.org",
+    "department": "Sales",
+    "title": "Customer Success Director",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "ebarnays",
+    "cn": "Edward Bernays",
+    "sn": "Bernays",
+    "given_name": "Edward",
+    "mail": "edward.bernays@neuropunk.org",
+    "department": "Marketing",
+    "title": "VP Growth Marketing",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "mogilvy",
+    "cn": "David Ogilvy",
+    "sn": "Ogilvy",
+    "given_name": "David",
+    "mail": "david.ogilvy@neuropunk.org",
+    "department": "Marketing",
+    "title": "Creative Director",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "pcrews",
+    "cn": "Patricia Crews",
+    "sn": "Crews",
+    "given_name": "Patricia",
+    "mail": "patricia.crews@neuropunk.org",
+    "department": "Marketing",
+    "title": "Brand Lead",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "pbarnum",
+    "cn": "Phineas Barnum",
+    "sn": "Barnum",
+    "given_name": "Phineas",
+    "mail": "phineas.barnum@neuropunk.org",
+    "department": "Marketing",
+    "title": "Events Coordinator",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "ilee",
+    "cn": "Ivy Lee",
+    "sn": "Lee",
+    "given_name": "Ivy",
+    "mail": "ivy.lee@neuropunk.org",
+    "department": "Marketing",
+    "title": "Communications Director",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "ckozlov",
+    "cn": "Cyril Kozlov",
+    "sn": "Kozlov",
+    "given_name": "Cyril",
+    "mail": "cyril.kozlov@neuropunk.org",
+    "department": "Engineering",
+    "title": "Contract Security Engineer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "mvolkov",
+    "cn": "Mikhail Volkov",
+    "sn": "Volkov",
+    "given_name": "Mikhail",
+    "mail": "mikhail.volkov@neuropunk.org",
+    "department": "Engineering",
+    "title": "Contract DevOps Engineer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "nstepanova",
+    "cn": "Nadia Stepanova",
+    "sn": "Stepanova",
+    "given_name": "Nadia",
+    "mail": "nadia.stepanova@neuropunk.org",
+    "department": "Engineering",
+    "title": "Backend Developer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "sivanov",
+    "cn": "Sergei Ivanov",
+    "sn": "Ivanov",
+    "given_name": "Sergei",
+    "mail": "sergei.ivanov@neuropunk.org",
+    "department": "Engineering",
+    "title": "Frontend Developer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "oromero",
+    "cn": "Oscar Romero",
+    "sn": "Romero",
+    "given_name": "Oscar",
+    "mail": "oscar.romero@neuropunk.org",
+    "department": "Engineering",
+    "title": "Software Engineer II",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "jgarcia",
+    "cn": "Juan Garcia",
+    "sn": "Garcia",
+    "given_name": "Juan",
+    "mail": "juan.garcia@neuropunk.org",
+    "department": "Engineering",
+    "title": "Platform Engineer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "mhernandez",
+    "cn": "Maria Hernandez",
+    "sn": "Hernandez",
+    "given_name": "Maria",
+    "mail": "maria.hernandez@neuropunk.org",
+    "department": "Product",
+    "title": "Product Designer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "cgonzalez",
+    "cn": "Carlos Gonzalez",
+    "sn": "Gonzalez",
+    "given_name": "Carlos",
+    "mail": "carlos.gonzalez@neuropunk.org",
+    "department": "Sales",
+    "title": "Account Executive",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "llopez",
+    "cn": "Laura Lopez",
+    "sn": "Lopez",
+    "given_name": "Laura",
+    "mail": "laura.lopez@neuropunk.org",
+    "department": "Sales",
+    "title": "Sales Development Rep",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "smartinez",
+    "cn": "Sofia Martinez",
+    "sn": "Martinez",
+    "given_name": "Sofia",
+    "mail": "sofia.martinez@neuropunk.org",
+    "department": "Marketing",
+    "title": "SEO Manager",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "arodriguez",
+    "cn": "Alejandro Rodriguez",
+    "sn": "Rodriguez",
+    "given_name": "Alejandro",
+    "mail": "alejandro.rodriguez@neuropunk.org",
+    "department": "Finance",
+    "title": "Senior Accountant",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "mperez",
+    "cn": "Mateo Perez",
+    "sn": "Perez",
+    "given_name": "Mateo",
+    "mail": "mateo.perez@neuropunk.org",
+    "department": "Operations",
+    "title": "Workplace Coordinator",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "lsanchez",
+    "cn": "Lucia Sanchez",
+    "sn": "Sanchez",
+    "given_name": "Lucia",
+    "mail": "lucia.sanchez@neuropunk.org",
+    "department": "Engineering",
+    "title": "Data Engineer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "dramirez",
+    "cn": "Diego Ramirez",
+    "sn": "Ramirez",
+    "given_name": "Diego",
+    "mail": "diego.ramirez@neuropunk.org",
+    "department": "Security",
+    "title": "SOC Analyst Tier 1",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "ctorres",
+    "cn": "Camila Torres",
+    "sn": "Torres",
+    "given_name": "Camila",
+    "mail": "camila.torres@neuropunk.org",
+    "department": "Engineering",
+    "title": "Cloud Engineer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "fflores",
+    "cn": "Fernando Flores",
+    "sn": "Flores",
+    "given_name": "Fernando",
+    "mail": "fernando.flores@neuropunk.org",
+    "department": "Operations",
+    "title": "IT Inventory Clerk",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "vrivera",
+    "cn": "Valentina Rivera",
+    "sn": "Rivera",
+    "given_name": "Valentina",
+    "mail": "valentina.rivera@neuropunk.org",
+    "department": "Marketing",
+    "title": "Social Media Strategist",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "jgomez",
+    "cn": "Javier Gomez",
+    "sn": "Gomez",
+    "given_name": "Javier",
+    "mail": "javier.gomez@neuropunk.org",
+    "department": "Sales",
+    "title": "Commercial Account Exec",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "mdiaz",
+    "cn": "Mariana Diaz",
+    "sn": "Diaz",
+    "given_name": "Mariana",
+    "mail": "mariana.diaz@neuropunk.org",
+    "department": "Product",
+    "title": "UX Researcher",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "areyes",
+    "cn": "Andres Reyes",
+    "sn": "Reyes",
+    "given_name": "Andres",
+    "mail": "andres.reyes@neuropunk.org",
+    "department": "Engineering",
+    "title": "Frontend Engineer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "imorales",
+    "cn": "Isabella Morales",
+    "sn": "Morales",
+    "given_name": "Isabella",
+    "mail": "isabella.morales@neuropunk.org",
+    "department": "Operations",
+    "title": "Talent Acquisition Lead",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "gortiz",
+    "cn": "Gabriel Ortiz",
+    "sn": "Ortiz",
+    "given_name": "Gabriel",
+    "mail": "gabriel.ortiz@neuropunk.org",
+    "department": "Engineering",
+    "title": "Full Stack Engineer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "ecastillo",
+    "cn": "Elena Castillo",
+    "sn": "Castillo",
+    "given_name": "Elena",
+    "mail": "elena.castillo@neuropunk.org",
+    "department": "Finance",
+    "title": "Financial Analyst",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "sguerrero",
+    "cn": "Santiago Guerrero",
+    "sn": "Guerrero",
+    "given_name": "Santiago",
+    "mail": "santiago.guerrero@neuropunk.org",
+    "department": "Security",
+    "title": "Penetration Tester",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "vrojas",
+    "cn": "Victoria Rojas",
+    "sn": "Rojas",
+    "given_name": "Victoria",
+    "mail": "victoria.rojas@neuropunk.org",
+    "department": "Marketing",
+    "title": "Email Marketer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "nvargas",
+    "cn": "Nicolas Vargas",
+    "sn": "Vargas",
+    "given_name": "Nicolas",
+    "mail": "nicolas.vargas@neuropunk.org",
+    "department": "Engineering",
+    "title": "DevOps Specialist",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "cmendoza",
+    "cn": "Catalina Mendoza",
+    "sn": "Mendoza",
+    "given_name": "Catalina",
+    "mail": "catalina.mendoza@neuropunk.org",
+    "department": "Sales",
+    "title": "Inbound Sales Rep",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "acruz",
+    "cn": "Angel Cruz",
+    "sn": "Cruz",
+    "given_name": "Angel",
+    "mail": "angel.cruz@neuropunk.org",
+    "department": "Operations",
+    "title": "Facilities Specialist",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "jsoto",
+    "cn": "Julia Soto",
+    "sn": "Soto",
+    "given_name": "Julia",
+    "mail": "julia.soto@neuropunk.org",
+    "department": "Product",
+    "title": "Product Analyst",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "ssilva",
+    "cn": "Samuel Silva",
+    "sn": "Silva",
+    "given_name": "Samuel",
+    "mail": "samuel.silva@neuropunk.org",
+    "department": "Engineering",
+    "title": "Site Reliability Engineer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "dcastro",
+    "cn": "Daniela Castro",
+    "sn": "Castro",
+    "given_name": "Daniela",
+    "mail": "daniela.castro@neuropunk.org",
+    "department": "Engineering",
+    "title": "ML Engineer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "eramos",
+    "cn": "Emilio Ramos",
+    "sn": "Ramos",
+    "given_name": "Emilio",
+    "mail": "emilio.ramos@neuropunk.org",
+    "department": "Finance",
+    "title": "Payroll Specialist",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "aherrera",
+    "cn": "Alicia Herrera",
+    "sn": "Herrera",
+    "given_name": "Alicia",
+    "mail": "alicia.herrera@neuropunk.org",
+    "department": "Operations",
+    "title": "Executive Assistant",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "mmedina",
+    "cn": "Manuel Medina",
+    "sn": "Medina",
+    "given_name": "Manuel",
+    "mail": "manuel.medina@neuropunk.org",
+    "department": "Engineering",
+    "title": "Backend Developer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "paguilar",
+    "cn": "Paula Aguilar",
+    "sn": "Aguilar",
+    "given_name": "Paula",
+    "mail": "paula.aguilar@neuropunk.org",
+    "department": "Product",
+    "title": "Technical Writer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "jvega",
+    "cn": "Joaquin Vega",
+    "sn": "Vega",
+    "given_name": "Joaquin",
+    "mail": "joaquin.vega@neuropunk.org",
+    "department": "Engineering",
+    "title": "QA Automation Engineer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "lpena",
+    "cn": "Luciana Pena",
+    "sn": "Pena",
+    "given_name": "Luciana",
+    "mail": "luciana.pena@neuropunk.org",
+    "department": "Security",
+    "title": "AppSec Analyst",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "bnavarro",
+    "cn": "Bruno Navarro",
+    "sn": "Navarro",
+    "given_name": "Bruno",
+    "mail": "bruno.navarro@neuropunk.org",
+    "department": "Sales",
+    "title": "Sales Engineer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "sdelgado",
+    "cn": "Sara Delgado",
+    "sn": "Delgado",
+    "given_name": "Sara",
+    "mail": "sara.delgado@neuropunk.org",
+    "department": "Marketing",
+    "title": "Content Writer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "rcabrera",
+    "cn": "Rodrigo Cabrera",
+    "sn": "Cabrera",
+    "given_name": "Rodrigo",
+    "mail": "rodrigo.cabrera@neuropunk.org",
+    "department": "Operations",
+    "title": "IT Helpdesk Specialist",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "mrios",
+    "cn": "Martina Rios",
+    "sn": "Rios",
+    "given_name": "Martina",
+    "mail": "martina.rios@neuropunk.org",
+    "department": "Engineering",
+    "title": "Database Engineer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "tleon",
+    "cn": "Thiago Leon",
+    "sn": "Leon",
+    "given_name": "Thiago",
+    "mail": "thiago.leon@neuropunk.org",
+    "department": "Engineering",
+    "title": "Frontend Engineer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "emiranda",
+    "cn": "Emma Miranda",
+    "sn": "Miranda",
+    "given_name": "Emma",
+    "mail": "emma.miranda@neuropunk.org",
+    "department": "Finance",
+    "title": "Treasury Specialist",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "fcampos",
+    "cn": "Felipe Campos",
+    "sn": "Campos",
+    "given_name": "Felipe",
+    "mail": "felipe.campos@neuropunk.org",
+    "department": "Sales",
+    "title": "Account Director",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "aserrano",
+    "cn": "Antonella Serrano",
+    "sn": "Serrano",
+    "given_name": "Antonella",
+    "mail": "antonella.serrano@neuropunk.org",
+    "department": "Product",
+    "title": "Associate Product Manager",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  },
+  {
+    "uid": "lmolina",
+    "cn": "Lucas Molina",
+    "sn": "Molina",
+    "given_name": "Lucas",
+    "mail": "lucas.molina@neuropunk.org",
+    "department": "Security",
+    "title": "Compliance Engineer",
+    "object_classes": ["top", "person", "organizationalPerson", "inetOrgPerson"]
+  }
+]
