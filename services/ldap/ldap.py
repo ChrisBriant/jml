@@ -11,7 +11,19 @@ from schemas.ldap.directory import (
     LDAPOUCreate,
     LDAPMoveObject,
 )
+from datetime import datetime, timezone, timedelta
+import jwt
 from pathlib import Path
+from ldap3 import SUBTREE  # Ensure this is imported at top of ldap.py
+
+ROOT_DIR = Path(__file__).resolve().parents[2]
+dotenv.load_dotenv(ROOT_DIR / ".env")
+
+# JWT Settings (add to your .env or keep sensible defaults)
+JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "change-me-in-production-super-secret-key")
+JWT_ALGORITHM = os.environ.get("JWT_ALGORITHM", "HS256")
+JWT_EXPIRATION_MINUTES = int(os.environ.get("JWT_EXPIRATION_MINUTES", 480))  # 8 hours
+
 
 # LOAD ENVIRONMENT
 PROJECT_ROOT = next(
@@ -44,6 +56,19 @@ class LDAPService:
             password=LDAP_SERVICE_PASSWORD,
             auto_bind=True
         )
+
+
+    def _get_dn_by_filter(self, search_filter: str) -> str | None:
+        """Find the exact DN of an entry across the directory."""
+        self.connection.search(
+            search_base=self.base_dn,
+            search_filter=search_filter,
+            search_scope=SUBTREE,
+            attributes=[]
+        )
+        if self.connection.entries:
+            return self.connection.entries[0].entry_dn
+        return None
 
     # ==========================================
     # USER OPERATIONS
@@ -191,6 +216,91 @@ class LDAPService:
         self.connection.delete(user_dn)
         return self.connection.result
 
+    def authenticate_user(self, username: str, password: str) -> str | None:
+        """
+        Authenticate a user using the search-then-bind pattern.
+        Returns an encoded JWT string with user claims if successful, or None.
+        """
+        if not username or not password:
+            return None
+
+        # 1. Resolve user entry and DN by uid or email
+        self.connection.search(
+            search_base=self.base_dn,
+            search_filter=f"(|(uid={username})(mail={username}))",
+            search_scope=SUBTREE,
+            attributes=["uid", "cn", "sn", "givenName", "mail", "ou", "title"]
+        )
+
+        if not self.connection.entries:
+            return None
+
+        user_entry = self.connection.entries[0]
+        user_dn = user_entry.entry_dn
+
+        # 2. Attempt to bind using the user's DN and password
+        user_connection = Connection(
+            self.server,
+            user=user_dn,
+            password=password,
+            auto_bind=False
+        )
+
+        try:
+            if not user_connection.bind():
+                return None  # Invalid credentials
+        finally:
+            user_connection.unbind()
+
+        # 3. Retrieve groups where this user is a member (for RBAC)
+        self.connection.search(
+            search_base=self.base_dn,
+            search_filter=f"(&(objectClass=groupOfNames)(member={user_dn}))",
+            search_scope=SUBTREE,
+            attributes=["cn"]
+        )
+        groups = [str(grp.cn) for grp in self.connection.entries]
+
+        # 4. Construct JWT Claims Payload
+        now = datetime.now(timezone.utc)
+        payload = {
+            # Standard claims
+            "sub": str(user_entry.uid),
+            "iat": int(now.timestamp()),
+            "exp": int((now + timedelta(minutes=JWT_EXPIRATION_MINUTES)).timestamp()),
+            
+            # User profile claims
+            "email": str(user_entry.mail) if user_entry.mail else None,
+            "name": str(user_entry.cn) if user_entry.cn else None,
+            "given_name": str(user_entry.givenName) if user_entry.givenName else None,
+            "family_name": str(user_entry.sn) if user_entry.sn else None,
+            "department": str(user_entry.ou) if user_entry.ou else None,
+            "title": str(user_entry.title) if user_entry.title else None,
+            
+            # Authorization / RBAC claim
+            "groups": groups
+        }
+
+        # 5. Sign and return the JWT
+        print("ENCODING WITH KEY:", repr(JWT_SECRET_KEY))
+        token = jwt.encode(payload, JWT_SECRET_KEY, algorithm=JWT_ALGORITHM)
+        return token
+
+    def reset_password(self, uid: str, new_password: str) -> dict:
+        """
+        Reset a user's password using the LDAP Password Modify
+        Extended Operation (RFC 3062).
+        """
+        user_dn = self._get_dn_by_filter(f"(&(objectClass=inetOrgPerson)(uid={uid}))")
+        if not user_dn:
+            return {"result": 32, "description": "noSuchObject"}
+
+        self.connection.extend.standard.modify_password(
+            user=user_dn,
+            new_password=new_password
+        )
+        return self.connection.result
+
     # ==========================================
     # GROUP OPERATIONS
     # ==========================================
@@ -215,22 +325,29 @@ class LDAPService:
         return self.connection.result
 
     def get_groups(self) -> list[LDAPGroup]:
-        """Retrieve groups mapped to LDAPGroup schemas."""
+        """Retrieve all groups across the entire directory tree."""
         self.connection.search(
-            search_base=self.groups_ou,
-            search_filter="(objectClass=groupOfNames)",
-            search_scope=SUBTREE,
-            attributes=["cn", "description", "member", "objectClass"]
+            search_base=self.base_dn,  # <-- Search from root (dc=neuropunk) instead of self.groups_ou
+            search_filter="(|(objectClass=groupOfNames)(objectClass=groupOfUniqueNames)(objectClass=posixGroup))",
+            search_scope=SUBTREE,      # <-- Recursively traverses all child OUs
+            attributes=["cn", "description", "member", "uniqueMember", "objectClass"]
         )
 
         groups = []
         for entry in self.connection.entries:
+            # Handle member attributes whether groupOfNames or groupOfUniqueNames
+            members = []
+            if hasattr(entry, "member") and entry.member:
+                members = list(entry.member)
+            elif hasattr(entry, "uniqueMember") and entry.uniqueMember:
+                members = list(entry.uniqueMember)
+
             groups.append(
                 LDAPGroup(
                     dn=entry.entry_dn,
                     cn=str(entry.cn),
-                    description=str(entry.description) if entry.description else None,
-                    members=list(entry.member) if entry.member else [],
+                    description=str(entry.description) if hasattr(entry, "description") and entry.description else None,
+                    members=members,
                     object_classes=list(entry.objectClass)
                 )
             )
@@ -271,10 +388,16 @@ class LDAPService:
 
         self.connection.add(dn, attributes=attributes)
         return self.connection.result
-
+    
     def move_object(self, move_action: LDAPMoveObject) -> dict:
-        """Move an entry to a new parent OU using LDAPMoveObject schema."""
-        # Extract relative DN (e.g. 'uid=jsmith' or 'cn=Developers')
+        """Move an object to a new parent OU."""
+        # Extract RDN (e.g. 'cn=GLOBAL_READER')
         rdn = move_action.current_dn.split(",", 1)[0]
 
-        self
+        self.connection.modify_dn(
+            dn=move_action.current_dn,
+            relative_dn=rdn,
+            new_superior=move_action.new_parent_dn
+        )
+        # MUST return the result dict
+        return self.connection.result

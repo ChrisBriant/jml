@@ -5,6 +5,17 @@ from pydantic import BaseModel, EmailStr, Field
 # ACTION / STATUS RESPONSE SCHEMA
 # ==========================================
 
+
+class LDAPLoginRequest(BaseModel):
+    username: str = Field(min_length=1, description="Username (uid) or email")
+    password: str = Field(min_length=1, description="Plaintext password")
+
+
+class LoginSuccessResponse(BaseModel):
+    success: bool = True
+    message: str = "Authentication successful"
+
+
 class LDAPActionResponse(BaseModel):
     """Standard response for mutations like disable, delete, move, or membership actions."""
     success: bool

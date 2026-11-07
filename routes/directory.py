@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status, Response
 
 from schemas.ldap.directory import (
     LDAPUser,
@@ -13,20 +13,94 @@ from schemas.ldap.directory import (
     LDAPDirectorySnapshot,
     LDAPDirectoryTree,
     LDAPActionResponse,
+    LDAPLoginRequest,
+    LoginSuccessResponse,
 )
 from services.ldap.ldap import LDAPService
 from services.ldap.export_directory import fetch_all_ous, build_directory_tree
+import os
+from services.ldap.jwt import TokenClaims
+from services.ldap.authorisation import require_groups
 
 router = APIRouter(tags=["LDAP Directory"])
 
+# Cookie Configuration
+COOKIE_NAME = "access_token"
+COOKIE_MAX_AGE = int(os.environ.get("JWT_EXPIRATION_MINUTES", 480)) * 60  # in seconds (8 hours)
+IS_PRODUCTION = os.environ.get("ENVIRONMENT", "development").lower() == "production"
 
 def get_ldap_service() -> LDAPService:
     """Dependency provider for LDAPService."""
     return LDAPService()
 
 
+@router.post(
+    "/login",
+    response_model=LoginSuccessResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Authenticate User and Set Cookie",
+)
+async def login(
+    credentials: LDAPLoginRequest,
+    response: Response,
+    service: LDAPService = Depends(get_ldap_service),
+):
+    """
+    Authenticate against LDAP via username and password.
+    On success: Sets an HttpOnly session cookie containing the JWT.
+    On failure: Raises HTTP 401 Unauthorized.
+    """
+    # 1. Attempt authentication and retrieve signed JWT
+    jwt_token = service.authenticate_user(
+        username=credentials.username,
+        password=credentials.password
+    )
+
+    # 2. If credentials failed, return 401
+    if not jwt_token:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid username or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    # 3. Set the Secure HttpOnly cookie in the browser
+    response.set_cookie(
+        key=COOKIE_NAME,
+        value=jwt_token,
+        httponly=True,            # Prevents JavaScript (XSS) access
+        secure=IS_PRODUCTION,    # True in production (HTTPS only), False on http://localhost
+        samesite="lax",           # Mitigates CSRF while allowing standard top-level navigation
+        max_age=COOKIE_MAX_AGE,   # Cookie lifetime in seconds (matches JWT expiration)
+        path="/",                 # Cookie is valid across the whole domain
+    )
+
+    return LoginSuccessResponse()
+
+
+@router.post(
+    "/logout",
+    status_code=status.HTTP_200_OK,
+    summary="Logout User",
+)
+async def logout(response: Response):
+    """Clear the session cookie to log the user out."""
+    response.delete_cookie(
+        key=COOKIE_NAME,
+        path="/",
+        httponly=True,
+        samesite="lax"
+    )
+    return {"message": "Successfully logged out"}
+
+
 def handle_ldap_result(result: dict, success_message: str) -> LDAPActionResponse:
     """Helper to translate LDAP return codes to proper HTTP responses."""
+    if result is None:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="LDAP operation returned no result",
+        )
     code = result.get("result", -1)
     description = result.get("description", "Unknown LDAP error")
 
@@ -78,8 +152,10 @@ async def create_user_ldap(
 )
 async def get_users_ldap(
     service: LDAPService = Depends(get_ldap_service),
+    current_user: TokenClaims = Depends(require_groups(["GLOBAL_READER","GLOBAL_ADMIN"]))
 ):
     """Retrieve all users registered under the base directory."""
+    print("CURRENT USER IS", current_user)
     return service.get_users()
 
 
