@@ -136,6 +136,7 @@ def handle_ldap_result(result: dict, success_message: str) -> LDAPActionResponse
 async def create_user_ldap(
     user: LDAPUser,
     service: LDAPService = Depends(get_ldap_service),
+    current_user: TokenClaims = Depends(require_groups(["GLOBAL_ADMIN"]))
 ):
     """Create a new user entry in the LDAP directory."""
     result = service.create_user(user)
@@ -167,6 +168,7 @@ async def get_users_ldap(
 async def get_user_ldap(
     uid: str,
     service: LDAPService = Depends(get_ldap_service),
+    current_user: TokenClaims = Depends(require_groups(["GLOBAL_READER","GLOBAL_ADMIN"]))
 ):
     """Retrieve a single user by their uid."""
     user = service.get_user(uid)
@@ -187,6 +189,7 @@ async def update_user_ldap(
     uid: str,
     updates: LDAPUserUpdate,
     service: LDAPService = Depends(get_ldap_service),
+    current_user: TokenClaims = Depends(require_groups(["GLOBAL_ADMIN"]))
 ):
     """Update user attributes (title, department, name, mail, etc.)."""
     result = service.update_user(uid, updates)
@@ -206,6 +209,7 @@ async def update_user_ldap(
 async def disable_user_ldap(
     uid: str,
     service: LDAPService = Depends(get_ldap_service),
+    current_user: TokenClaims = Depends(require_groups(["GLOBAL_ADMIN"]))
 ):
     """Lock user account via OpenLDAP ppolicy."""
     result = service.disable_user(uid)
@@ -220,6 +224,7 @@ async def disable_user_ldap(
 async def delete_user_ldap(
     uid: str,
     service: LDAPService = Depends(get_ldap_service),
+    current_user: TokenClaims = Depends(require_groups(["GLOBAL_READER","GLOBAL_ADMIN"]))
 ):
     """Permanently delete a user entry from the directory."""
     result = service.delete_user(uid)
@@ -239,6 +244,7 @@ async def delete_user_ldap(
 async def create_group_ldap(
     group: LDAPGroupCreate,
     service: LDAPService = Depends(get_ldap_service),
+    current_user: TokenClaims = Depends(require_groups(["GLOBAL_ADMIN"]))
 ):
     """Create a new groupOfNames group entry."""
     result = service.create_group(group)
@@ -252,6 +258,7 @@ async def create_group_ldap(
 )
 async def get_groups_ldap(
     service: LDAPService = Depends(get_ldap_service),
+    current_user: TokenClaims = Depends(require_groups(["GLOBAL_READER","GLOBAL_ADMIN"]))
 ):
     """Retrieve all groups and their member lists."""
     return service.get_groups()
@@ -265,6 +272,7 @@ async def get_groups_ldap(
 async def add_user_to_group_ldap(
     action: LDAPGroupMemberAction,
     service: LDAPService = Depends(get_ldap_service),
+    current_user: TokenClaims = Depends(require_groups(["GLOBAL_ADMIN"]))
 ):
     """Add a user's DN into a target group's member list."""
     result = service.add_user_to_group(action)
@@ -281,6 +289,7 @@ async def add_user_to_group_ldap(
 async def remove_user_from_group_ldap(
     action: LDAPGroupMemberAction,
     service: LDAPService = Depends(get_ldap_service),
+    current_user: TokenClaims = Depends(require_groups(["GLOBAL_ADMIN"]))
 ):
     """Remove a user's DN from a group's member list."""
     result = service.remove_user_from_group(action)
@@ -302,6 +311,7 @@ async def remove_user_from_group_ldap(
 async def create_ou_ldap(
     ou: LDAPOUCreate,
     service: LDAPService = Depends(get_ldap_service),
+    current_user: TokenClaims = Depends(require_groups(["GLOBAL_ADMIN"]))
 ):
     """Create an organizationalUnit entry under the base or specified parent DN."""
     result = service.create_ou(ou)
@@ -315,6 +325,7 @@ async def create_ou_ldap(
 )
 async def get_ous_ldap(
     service: LDAPService = Depends(get_ldap_service),
+    current_user: TokenClaims = Depends(require_groups(["GLOBAL_READER","GLOBAL_ADMIN"]))
 ):
     """Retrieve all organizationalUnit entries in the directory."""
     return fetch_all_ous(service)
@@ -328,6 +339,7 @@ async def get_ous_ldap(
 async def move_object_ldap(
     move_action: LDAPMoveObject,
     service: LDAPService = Depends(get_ldap_service),
+    current_user: TokenClaims = Depends(require_groups(["GLOBAL_ADMIN"]))
 ):
     """Move any LDAP object (user, group, or child OU) to a new parent OU."""
     result = service.move_object(move_action)
@@ -348,6 +360,7 @@ async def move_object_ldap(
 )
 async def get_directory_snapshot(
     service: LDAPService = Depends(get_ldap_service),
+    current_user: TokenClaims = Depends(require_groups(["DEMO_USERS","GLOBAL_READER","GLOBAL_ADMIN"]))
 ):
     """Return a flat inventory of all OUs, users, and groups."""
     return LDAPDirectorySnapshot(
@@ -365,6 +378,7 @@ async def get_directory_snapshot(
 )
 async def get_directory_tree(
     service: LDAPService = Depends(get_ldap_service),
+    current_user: TokenClaims = Depends(require_groups(["DEMO_USERS","GLOBAL_READER","GLOBAL_ADMIN"]))
 ):
     """Return a nested DIT tree structure for UI rendering and navigation."""
     ous = fetch_all_ous(service)

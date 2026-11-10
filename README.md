@@ -23,3 +23,7 @@ dn:cn=admin,dc=neuropunk -->
 
 ## RUNNING FASTAPI
 uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+## NGROK
+
+ngrok http 8000 --url welcome-capital-jaybird.ngrok-free.app
