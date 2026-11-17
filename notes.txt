@@ -1,0 +1,28 @@
+Example Employee created
+
+
+39cf8e34-cb33-466e-a8b7-26a415e7240c
+
+
+
+{
+  "first_name": "Skid",
+  "last_name": "McCackerson",
+  "date_of_birth": "1995-06-15",
+  "email": "skid.McCackerson@example.com",
+  "phone_number": "0121 444 4544",
+  "address": "4 McCakers Lane",
+  "username": "scackerson",
+  "department_id": "8f6a55bd-8d9f-47f9-9fb6-3eb2b4773c66",
+  "manager_id": "39cf8e34-cb33-466e-a8b7-26a415e7240c",
+  "job_title": "Buscuit Engineer",
+  "employment_status": "PENDING",
+  "employment_type": "PERMANENT_FULL_TIME",
+  "start_date": "2027-01-12",
+  "end_date": "2027-09-14",
+  "contract_end_date": "2027-09-14",
+  "hours_per_week": 35,
+  "fte": 2,
+  "probation_end_date": "2027-01-14",
+  "initial_status_reason": "New employee created"
+}

@@ -5,6 +5,7 @@ from database.hr.models.employee import Employee
 from database.hr.models.employee_absence import EmployeeAbsence
 from database.hr.models.employment_history import EmploymentHistory
 from database.hr.models.employment_status_history import EmploymentStatusHistory
+from database.hr.models.system_user import SystemUser
 from sqlalchemy import text
 
 

@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from routes.directory import router as directory_router
+from routes.hr import router as hr_router
 from pathlib import Path
 # import dotenv
 # import os
@@ -23,3 +24,5 @@ app.add_middleware(
 )
 
 app.include_router(directory_router, prefix="/directory")
+#The HR backend which is going to be called "Perso"
+app.include_router(hr_router, prefix="/hr")

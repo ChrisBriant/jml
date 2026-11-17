@@ -2,6 +2,7 @@ import uuid
 from datetime import date, datetime, timedelta, timezone
 from decimal import Decimal
 from typing import Optional
+import re
 
 from sqlalchemy import (
     Column,
@@ -129,10 +130,68 @@ class Employee(Base):
         )
 
     @classmethod
+    async def _generate_next_employee_number(
+        cls,
+        db: AsyncSession,
+        prefix: str = "EMP",
+        pad_width: int = 4,
+    ) -> str:
+        """
+        Generate the next sequential employee_number (e.g. EMP0019).
+        Handles inconsistent legacy data such as:
+        - NULL, empty, or whitespace-only values
+        - Non-numeric legacy strings (e.g. 'TEMP', 'ADMIN')
+        - Mixed casing or separators (e.g. 'emp-0012', 'EMP_0012')
+        - Out-of-order created_at timestamps or gaps from deleted records
+        - Unrelated numeric IDs without the prefix (used only as fallback)
+        """
+        result = await db.execute(
+            select(cls.employee_number).order_by(cls.created_at.desc())
+        )
+        raw_numbers = [
+            val.strip()
+            for val in result.scalars().all()
+            if val is not None and val.strip()
+        ]
+
+        existing_upper = {val.upper() for val in raw_numbers}
+
+        # 1. Prefer numbers matching the standard prefix (e.g. EMP0018, emp-0018, EMP_18)
+        prefix_pattern = re.compile(
+            rf"^{re.escape(prefix)}[-_\s]*(\d+)$",
+            re.IGNORECASE,
+        )
+        prefixed_nums: list[int] = []
+        for val in raw_numbers:
+            match = prefix_pattern.match(val)
+            if match:
+                prefixed_nums.append(int(match.group(1)))
+
+        if prefixed_nums:
+            next_num = max(prefixed_nums) + 1
+        else:
+            # 2. Fallback: look for trailing digits on any non-standard format (e.g. 'STAFF-007', '0042')
+            trailing_pattern = re.compile(r"(\d+)$")
+            fallback_nums: list[int] = []
+            for val in raw_numbers:
+                match = trailing_pattern.search(val)
+                if match:
+                    fallback_nums.append(int(match.group(1)))
+
+            next_num = (max(fallback_nums) + 1) if fallback_nums else 1
+
+        # 3. Guarantee uniqueness against existing values
+        candidate = f"{prefix}{next_num:0{pad_width}d}"
+        while candidate.upper() in existing_upper:
+            next_num += 1
+            candidate = f"{prefix}{next_num:0{pad_width}d}"
+
+        return candidate
+
+    @classmethod
     async def create_one(
         cls,
         db: AsyncSession,
-        employee_number: str,
         first_name: str,
         last_name: str,
         job_title: str,
@@ -151,40 +210,67 @@ class Employee(Base):
         hours_per_week: Optional[Decimal] = None,
         fte: Optional[Decimal] = None,
         probation_end_date: Optional[date] = None,
+        employee_number: Optional[str] = None,
     ):
-        now = datetime.now(timezone.utc)
-        employee = cls(
-            employee_number=employee_number,
-            first_name=first_name,
-            last_name=last_name,
-            date_of_birth=date_of_birth,
-            email=email,
-            phone_number=phone_number,
-            address=address,
-            username=username,
-            department_id=department_id,
-            manager_id=manager_id,
-            job_title=job_title,
-            employment_status=employment_status,
-            employment_type=employment_type,
-            start_date=start_date,
-            end_date=end_date,
-            contract_end_date=contract_end_date,
-            hours_per_week=hours_per_week,
-            fte=fte,
-            probation_end_date=probation_end_date,
-            created_at=now,
-            updated_at=now,
-        )
+        auto_generate = not employee_number or not employee_number.strip()
+        max_retries = 5 if auto_generate else 1
+        employee = None
 
-        try:
-            db.add(employee)
-            await db.commit()
-            await db.flush()
-            await db.refresh(employee)
-        except IntegrityError as ie:
-            print("Error inserting employee", ie)
-            await db.rollback()
+        for attempt in range(max_retries):
+            resolved_employee_number = (
+                await cls._generate_next_employee_number(db)
+                if auto_generate
+                else employee_number.strip()
+            )
+
+            now = datetime.now(timezone.utc)
+            employee = cls(
+                employee_number=resolved_employee_number,
+                first_name=first_name,
+                last_name=last_name,
+                date_of_birth=date_of_birth,
+                email=email,
+                phone_number=phone_number,
+                address=address,
+                username=username,
+                department_id=department_id,
+                manager_id=manager_id,
+                job_title=job_title,
+                employment_status=employment_status,
+                employment_type=employment_type,
+                start_date=start_date,
+                end_date=end_date,
+                contract_end_date=contract_end_date,
+                hours_per_week=hours_per_week,
+                fte=fte,
+                probation_end_date=probation_end_date,
+                created_at=now,
+                updated_at=now,
+            )
+
+            try:
+                db.add(employee)
+                await db.commit()
+                await db.flush()
+                await db.refresh(employee)
+                break
+            except IntegrityError as ie:
+                await db.rollback()
+
+                # If concurrent requests generated the same employee_number, retry with the next one
+                if auto_generate and attempt < max_retries - 1:
+                    collision_check = await db.execute(
+                        select(cls.employee_id).where(
+                            func.upper(cls.employee_number) == resolved_employee_number.upper()
+                        )
+                    )
+                    if collision_check.scalar_one_or_none() is not None:
+                        continue
+
+                print("Error inserting employee", ie)
+                return None
+
+        if employee is None:
             return None
 
         inserted_employee = await db.execute(

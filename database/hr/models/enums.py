@@ -37,3 +37,8 @@ class AbsenceStatus(str, enum.Enum):
     ONGOING = "ONGOING"
     COMPLETED = "COMPLETED"
     CANCELLED = "CANCELLED"
+
+
+class UserRole(str, enum.Enum):
+    ADMIN = "admin"
+    READER = "reader"
