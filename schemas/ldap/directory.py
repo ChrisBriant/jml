@@ -37,6 +37,11 @@ class LDAPUser(BaseModel):
     mail: EmailStr
     department: str | None = None
     title: str | None = None
+    
+    # JML Lifecycle Fields
+    employee_number: str | None = Field(default=None, description="e.g. EMP-001234")
+    employee_type: str | None = Field(default=None, description="e.g. Permanent, Contractor, Intern")
+    
     dn: str | None = None
 
     object_classes: list[str] = Field(
@@ -49,6 +54,7 @@ class LDAPUser(BaseModel):
     )
 
 
+
 class LDAPUserUpdate(BaseModel):
     """Schema for updating user attributes."""
     cn: str | None = Field(default=None, min_length=1, max_length=256)
@@ -57,6 +63,8 @@ class LDAPUserUpdate(BaseModel):
     mail: EmailStr | None = None
     department: str | None = None
     title: str | None = None
+    employee_number: str | None = None
+    employee_type: str | None = None
 
 
 # ==========================================

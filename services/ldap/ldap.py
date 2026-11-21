@@ -75,7 +75,6 @@ class LDAPService:
     # ==========================================
 
     def create_user(self, user: LDAPUser) -> dict:
-        """Add a user using the LDAPUser schema."""
         dn = user.dn or f"uid={user.uid},{self.people_ou}"
 
         attributes = {
@@ -93,11 +92,17 @@ class LDAPService:
         if user.title:
             attributes["title"] = user.title
 
+        # Map JML attributes
+        if user.employee_number:
+            attributes["employeeNumber"] = str(user.employee_number)
+
+        if user.employee_type:
+            attributes["employeeType"] = str(user.employee_type)
+
         self.connection.add(dn, attributes=attributes)
         return self.connection.result
 
     def get_users(self) -> list[LDAPUser]:
-        """Retrieve users mapped to LDAPUser schemas."""
         self.connection.search(
             search_base=self.base_dn,
             search_filter="(objectClass=inetOrgPerson)",
@@ -110,6 +115,8 @@ class LDAPService:
                 "mail",
                 "ou",
                 "title",
+                "employeeNumber",
+                "employeeType",
                 "objectClass"
             ]
         )
@@ -125,15 +132,15 @@ class LDAPService:
                     mail=str(entry.mail),
                     department=str(entry.ou) if entry.ou else None,
                     title=str(entry.title) if entry.title else None,
+                    employee_number=str(entry.employeeNumber) if entry.employeeNumber else None,
+                    employee_type=str(entry.employeeType) if entry.employeeType else None,
                     dn=entry.entry_dn,
                     object_classes=list(entry.objectClass)
                 )
             )
-
         return users
 
     def get_user(self, uid: str) -> LDAPUser | None:
-        """Retrieve a single user by uid mapped to LDAPUser."""
         self.connection.search(
             search_base=self.base_dn,
             search_filter=f"(&(objectClass=inetOrgPerson)(uid={uid}))",
@@ -146,6 +153,8 @@ class LDAPService:
                 "mail",
                 "ou",
                 "title",
+                "employeeNumber",
+                "employeeType",
                 "objectClass"
             ]
         )
@@ -162,17 +171,17 @@ class LDAPService:
             mail=str(entry.mail),
             department=str(entry.ou) if entry.ou else None,
             title=str(entry.title) if entry.title else None,
+            employee_number=str(entry.employeeNumber) if entry.employeeNumber else None,
+            employee_type=str(entry.employeeType) if entry.employeeType else None,
             dn=entry.entry_dn,
             object_classes=list(entry.objectClass)
         )
 
     def update_user(self, uid: str, updates: LDAPUserUpdate) -> dict:
-        """Update user attributes using the LDAPUserUpdate schema."""
         user_dn = self._get_dn_by_filter(f"(&(objectClass=inetOrgPerson)(uid={uid}))")
         if not user_dn:
             return {"result": 32, "description": "noSuchObject"}
 
-        # Convert non-None fields to LDAP attribute mapping
         update_data = updates.model_dump(exclude_unset=True)
         ldap_attribute_map = {
             "cn": "cn",
@@ -181,6 +190,8 @@ class LDAPService:
             "mail": "mail",
             "department": "ou",
             "title": "title",
+            "employee_number": "employeeNumber",
+            "employee_type": "employeeType",
         }
 
         changes = {}
