@@ -56,6 +56,8 @@ from services.hr.jwt import (
     create_hr_access_token,
     HR_COOKIE_MAX_AGE,
 )
+from services.hr.jwt import TokenClaims
+from services.hr.authorisation import require_roles
 import os
 
 router = APIRouter(tags=["Personnel & HR"])
@@ -298,6 +300,7 @@ async def hr_logout(response: Response):
 async def create_department(
     payload: DepartmentCreate,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["admin"])),
 ):
     """Create a new department, optionally nested under a parent department."""
     existing = await Department.get_by_name(db, payload.name)
@@ -335,6 +338,7 @@ async def list_departments(
     page: int = Query(default=1, ge=1),
     page_size: int = Query(default=25, ge=1, le=200),
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["reader","admin"]))
 ):
     """Retrieve a paginated list of departments."""
     items, total = await Department.get_all_paginated(

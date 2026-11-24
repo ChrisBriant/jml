@@ -27,3 +27,18 @@ uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ## NGROK
 
 ngrok http 8000 --url welcome-capital-jaybird.ngrok-free.app
+
+
+
+# EXAMPLE PAYLOADS
+
+## HR Department payload
+
+{
+  "name": "department of false information",
+  "description": "This is a department where people specialise in mis information"
+}
+
+## Department ID to delete
+
+63937042-e354-4a8d-b3fc-aae355f56351
