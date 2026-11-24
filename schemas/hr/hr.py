@@ -28,6 +28,7 @@ class HRLoginSuccessResponse(BaseModel):
     message: str = "Successfully authenticated"
     username: str
     role: UserRole
+    token : str
 
 
 # ---------------------------------------------------------------------------

@@ -267,6 +267,7 @@ async def hr_login(
     return HRLoginSuccessResponse(
         username=user.username,
         role=user.role,
+        token=jwt_token,
     )
 
 
