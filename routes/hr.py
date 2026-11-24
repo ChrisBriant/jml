@@ -242,6 +242,8 @@ async def hr_login(
         password=credentials.password,
     )
 
+    print("USER", user)
+
     # 2. If credentials failed or account is disabled, return 401
     if user is None:
         raise HTTPException(
@@ -359,7 +361,10 @@ async def list_departments(
     status_code=status.HTTP_200_OK,
     summary="Get Organisational Department Tree",
 )
-async def get_department_tree(db: AsyncSession = Depends(get_db)):
+async def get_department_tree(
+    db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["reader", "admin"])),
+):
     """Build and return the full hierarchical department tree."""
     all_depts = await Department.get_all(db)
     nodes: Dict[UUID, DepartmentTreeNode] = {
@@ -390,7 +395,10 @@ async def get_department_tree(db: AsyncSession = Depends(get_db)):
     status_code=status.HTTP_200_OK,
     summary="Get Root Departments",
 )
-async def get_root_departments(db: AsyncSession = Depends(get_db)):
+async def get_root_departments(
+    db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["reader", "admin"])),
+):
     """Retrieve top-level departments with no parent department."""
     return await Department.get_root_departments(db)
 
@@ -404,6 +412,7 @@ async def get_root_departments(db: AsyncSession = Depends(get_db)):
 async def get_department(
     department_id: UUID,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["reader", "admin"])),
 ):
     """Retrieve a single department with parent, sub-departments, and employees."""
     return await _get_department_or_404(db, department_id)
@@ -418,6 +427,7 @@ async def get_department(
 async def get_department_children(
     department_id: UUID,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["reader", "admin"])),
 ):
     """Retrieve direct child departments for a given department."""
     await _get_department_or_404(db, department_id)
@@ -433,6 +443,7 @@ async def get_department_children(
 async def get_department_employees(
     department_id: UUID,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["reader", "admin"])),
 ):
     """Retrieve all employees currently assigned to a department."""
     await _get_department_or_404(db, department_id)
@@ -449,6 +460,7 @@ async def update_department(
     department_id: UUID,
     payload: DepartmentUpdate,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["admin"])),
 ):
     """Update department name, description, or parent department."""
     await _get_department_or_404(db, department_id)
@@ -492,6 +504,7 @@ async def update_department(
 async def delete_department(
     department_id: UUID,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["admin"])),
 ):
     """Delete a department if it has no dependent employees, child departments, or history records."""
     await _get_department_or_404(db, department_id)
@@ -517,6 +530,7 @@ async def delete_department(
 async def create_employee(
     payload: EmployeeCreate,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["admin"])),
 ):
     """
     Create a central employee record, record the initial status in
@@ -617,6 +631,7 @@ async def list_employees(
         description="Filter by employee_number, name, email, username, or job_title",
     ),
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["reader", "admin"])),
 ):
     """Retrieve a paginated list of employees with optional filtering."""
     filters = []
@@ -676,6 +691,7 @@ async def list_employees(
 async def get_employee_by_number(
     employee_number: str,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["reader", "admin"])),
 ):
     """Retrieve an employee using their unique employee number."""
     employee = await Employee.get_by_employee_number(db, employee_number)
@@ -696,6 +712,7 @@ async def get_employee_by_number(
 async def get_employee(
     employee_id: UUID,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["reader", "admin"])),
 ):
     """Retrieve a full employee profile including history and absences."""
     return await _get_employee_or_404(db, employee_id)
@@ -710,6 +727,7 @@ async def get_employee(
 async def get_direct_reports(
     employee_id: UUID,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["reader", "admin"])),
 ):
     """Retrieve all employees who report directly to the specified manager."""
     await _get_employee_or_404(db, employee_id)
@@ -726,6 +744,7 @@ async def update_employee(
     employee_id: UUID,
     payload: EmployeeUpdate,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["admin"])),
 ):
     """
     Update employee personal, contact, or contract fields.
@@ -776,6 +795,7 @@ async def update_employee(
 async def delete_employee(
     employee_id: UUID,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["admin"])),
 ):
     """Delete an employee record if no dependent records block deletion."""
     await _get_employee_or_404(db, employee_id)
@@ -801,6 +821,7 @@ async def delete_employee(
 async def get_employee_lifecycle(
     employee_id: UUID,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["reader", "admin"])),
 ):
     """
     Return the consolidated lifecycle state for an employee: current status,
@@ -843,6 +864,7 @@ async def transition_employee_status(
     employee_id: UUID,
     payload: LifecycleStatusTransitionRequest,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["admin"])),
 ):
     """
     Validate and apply a lifecycle status change, recording the transition in
@@ -872,6 +894,7 @@ async def activate_employee(
     employee_id: UUID,
     payload: LifecycleActivateRequest,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["admin"])),
 ):
     """
     Transition an employee to ACTIVE (typically from PENDING on start date,
@@ -916,6 +939,7 @@ async def suspend_employee(
     employee_id: UUID,
     payload: LifecycleActionRequest,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["admin"])),
 ):
     """Temporarily suspend an employee and log the status transition."""
     employee = await _get_employee_or_404(db, employee_id)
@@ -938,6 +962,7 @@ async def reinstate_employee(
     employee_id: UUID,
     payload: LifecycleActionRequest,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["admin"])),
 ):
     """Reinstate a SUSPENDED employee back to ACTIVE."""
     employee = await _get_employee_or_404(db, employee_id)
@@ -965,6 +990,7 @@ async def start_long_term_absence(
     employee_id: UUID,
     payload: LifecycleLongTermAbsenceRequest,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["admin"])),
 ):
     """
     Transition an employee to LONG_TERM_ABSENCE and optionally create a
@@ -1004,6 +1030,7 @@ async def return_to_work(
     employee_id: UUID,
     payload: LifecycleReturnToWorkRequest,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["admin"])),
 ):
     """
     Transition an employee from LONG_TERM_ABSENCE back to ACTIVE and optionally
@@ -1048,6 +1075,7 @@ async def place_on_notice(
     employee_id: UUID,
     payload: LifecycleExitRequest,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["admin"])),
 ):
     """Transition an employee to NOTICE_PERIOD and optionally record planned end_date."""
     employee = await _get_employee_or_404(db, employee_id)
@@ -1071,6 +1099,7 @@ async def terminate_employee(
     employee_id: UUID,
     payload: LifecycleExitRequest,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["admin"])),
 ):
     """
     Transition an employee to TERMINATED, record end_date, log status history,
@@ -1098,6 +1127,7 @@ async def retire_employee(
     employee_id: UUID,
     payload: LifecycleExitRequest,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["admin"])),
 ):
     """
     Transition an employee to RETIRED, record end_date, log status history,
@@ -1125,6 +1155,7 @@ async def transfer_employee_assignment(
     employee_id: UUID,
     payload: LifecycleTransferRequest,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["admin"])),
 ):
     """
     Move an employee to a new department, job title, or manager.
@@ -1175,6 +1206,7 @@ async def transfer_employee_assignment(
 async def create_employment_history(
     payload: EmploymentHistoryCreate,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["admin"])),
 ):
     """Create a historical or current organisational assignment record."""
     await _get_employee_or_404(db, payload.employee_id)
@@ -1219,6 +1251,7 @@ async def list_employment_history(
     page: int = Query(default=1, ge=1),
     page_size: int = Query(default=25, ge=1, le=200),
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["reader", "admin"])),
 ):
     """Retrieve a paginated list of all employment history assignments."""
     items, total = await EmploymentHistory.get_all_paginated(
@@ -1241,6 +1274,7 @@ async def list_employment_history(
 async def get_employment_history_record(
     employment_id: UUID,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["reader", "admin"])),
 ):
     """Retrieve a single employment history record."""
     record = await EmploymentHistory.get_by_id(db, employment_id)
@@ -1261,6 +1295,7 @@ async def get_employment_history_record(
 async def get_employee_employment_history(
     employee_id: UUID,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["reader", "admin"])),
 ):
     """Retrieve all employment assignment history for an employee."""
     await _get_employee_or_404(db, employee_id)
@@ -1276,6 +1311,7 @@ async def get_employee_employment_history(
 async def get_current_employee_assignment(
     employee_id: UUID,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["reader", "admin"])),
 ):
     """Retrieve the open (effective_to IS NULL) assignment record for an employee."""
     await _get_employee_or_404(db, employee_id)
@@ -1298,6 +1334,7 @@ async def update_employment_history_record(
     employment_id: UUID,
     payload: EmploymentHistoryUpdate,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["admin"])),
 ):
     """Update an existing employment history record."""
     existing = await EmploymentHistory.get_by_id(db, employment_id)
@@ -1345,6 +1382,7 @@ async def close_current_assignment(
     employee_id: UUID,
     payload: CloseAssignmentRequest,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["admin"])),
 ):
     """Close the currently open employment assignment for an employee."""
     await _get_employee_or_404(db, employee_id)
@@ -1382,6 +1420,7 @@ async def close_current_assignment(
 async def delete_employment_history_record(
     employment_id: UUID,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["admin"])),
 ):
     """Delete an employment history record by ID."""
     deleted = await EmploymentHistory.delete_by_id(db, employment_id)
@@ -1406,6 +1445,7 @@ async def delete_employment_history_record(
 async def create_absence(
     payload: EmployeeAbsenceCreate,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["admin"])),
 ):
     """Create a new absence record for an employee."""
     await _get_employee_or_404(db, payload.employee_id)
@@ -1443,6 +1483,7 @@ async def list_absences(
     page_size: int = Query(default=25, ge=1, le=200),
     absence_status: Optional[AbsenceStatus] = Query(default=None, alias="status"),
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["reader", "admin"])),
 ):
     """Retrieve paginated absence records, optionally filtered by absence status."""
     if absence_status is not None:
@@ -1484,6 +1525,7 @@ async def list_absences(
 async def get_absence(
     absence_id: UUID,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["reader", "admin"])),
 ):
     """Retrieve a single absence record by ID."""
     absence = await EmployeeAbsence.get_by_id(db, absence_id)
@@ -1505,6 +1547,7 @@ async def get_employee_absences(
     employee_id: UUID,
     active_only: bool = Query(default=False),
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["reader", "admin"])),
 ):
     """Retrieve all absences (or only ONGOING absences) for an employee."""
     await _get_employee_or_404(db, employee_id)
@@ -1523,6 +1566,7 @@ async def update_absence(
     absence_id: UUID,
     payload: EmployeeAbsenceUpdate,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["admin"])),
 ):
     """Update fields on an existing employee absence record."""
     existing = await EmployeeAbsence.get_by_id(db, absence_id)
@@ -1560,6 +1604,7 @@ async def update_absence_status(
     absence_id: UUID,
     payload: EmployeeAbsenceStatusUpdate,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["admin"])),
 ):
     """Update the status (PLANNED, ONGOING, COMPLETED, CANCELLED) of an absence."""
     existing = await EmployeeAbsence.get_by_id(db, absence_id)
@@ -1597,6 +1642,7 @@ async def update_absence_status(
 async def delete_absence(
     absence_id: UUID,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["admin"])),
 ):
     """Delete an absence record by ID."""
     deleted = await EmployeeAbsence.delete_by_id(db, absence_id)
@@ -1622,6 +1668,7 @@ async def list_status_history(
     page: int = Query(default=1, ge=1),
     page_size: int = Query(default=25, ge=1, le=200),
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["reader", "admin"])),
 ):
     """Retrieve paginated employment status history entries."""
     items, total = await EmploymentStatusHistory.get_all_paginated(
@@ -1644,6 +1691,7 @@ async def list_status_history(
 async def get_status_history_record(
     status_history_id: UUID,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["reader", "admin"])),
 ):
     """Retrieve a single employment status history record."""
     record = await EmploymentStatusHistory.get_by_id(db, status_history_id)
@@ -1664,6 +1712,7 @@ async def get_status_history_record(
 async def get_employee_status_history(
     employee_id: UUID,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["reader", "admin"])),
 ):
     """Retrieve the complete employment status change timeline for an employee."""
     await _get_employee_or_404(db, employee_id)
@@ -1679,6 +1728,7 @@ async def get_employee_status_history(
 async def get_latest_employee_status_change(
     employee_id: UUID,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["reader", "admin"])),
 ):
     """Retrieve the most recent employment status history entry for an employee."""
     await _get_employee_or_404(db, employee_id)
@@ -1701,6 +1751,7 @@ async def update_status_history_record(
     status_history_id: UUID,
     payload: EmploymentStatusHistoryUpdate,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["admin"])),
 ):
     """Correct metadata (such as reason or effective_date) on a status history entry."""
     existing = await EmploymentStatusHistory.get_by_id(db, status_history_id)
@@ -1729,6 +1780,7 @@ async def update_status_history_record(
 async def delete_status_history_record(
     status_history_id: UUID,
     db: AsyncSession = Depends(get_db),
+    current_user: TokenClaims = Depends(require_roles(["admin"])),
 ):
     """Delete an employment status history record by ID."""
     deleted = await EmploymentStatusHistory.delete_by_id(db, status_history_id)
