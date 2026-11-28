@@ -16,7 +16,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
-        "http://localhost:3000"
+        "http://localhost:3000",
+        "http://localhost:3001",
     ],  # React app origin
     allow_credentials=True,                   # must be True for cookies
     allow_methods=["*"],

@@ -102,9 +102,11 @@ class LDAPService:
         self.connection.add(dn, attributes=attributes)
         return self.connection.result
 
-    def get_users(self) -> list[LDAPUser]:
+    def get_users(
+            self, 
+            search_base : str | None = None) -> list[LDAPUser]:
         self.connection.search(
-            search_base=self.base_dn,
+            search_base=search_base or self.base_dn,
             search_filter="(objectClass=inetOrgPerson)",
             search_scope=SUBTREE,
             attributes=[
