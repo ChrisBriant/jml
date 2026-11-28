@@ -3,6 +3,7 @@ from .db import engine, Base
 from database.jml.models.iga_audit import IGAAudit
 from database.jml.models.iga_provisioning import IGAProvisioning
 from database.jml.models.iga_user import IGAUser
+from database.jml.models.jml_cycle_run import JMLCycleRun
 from sqlalchemy import text
 
 

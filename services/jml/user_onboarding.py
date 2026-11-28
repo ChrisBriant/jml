@@ -5,11 +5,14 @@ from services.jml.auth import get_token
 import dotenv
 import os
 import json
+from uuid import UUID
 from datetime import datetime, timezone
 from pydantic import ValidationError
 from database.jml.models.iga_user import IGAUser
+from database.jml.models.jml_cycle_run import JMLCycleRun
 from database.jml.db import AsyncSession, SessionLocal
 from schemas.iga.iga import HREmployeeToIGAUser
+
 
 
 
@@ -19,121 +22,151 @@ if os.path.isfile(dotenv_file):
 
 HR_ENDPOINT_URL = os.environ.get("HR_ENDPOINT_URL")
 
+
 async def sync_hr_employees_and_report(
     jml_db: AsyncSession,
-    employees_payload: List,
+    employees: List[Dict[str, Any]],
     source_system: str = "HR_SYSTEM",
+    triggered_by: str = "SCHEDULER",
+    cycle_id: Optional[UUID] = None,
 ) -> Dict[str, Any]:
     """
-    Sync employees from the depaginated HR API payload into the JML database
-    (IGAUser + IGAAudit) without provisioning to LDAP, and return a report
-    with statistics and categorised employee lists.
+    Sync a list of HR employee objects into the JML database (IGAUser + IGAAudit),
+    log the cycle run in JMLCycleRun, and return the sync report.
     """
-    items = employees_payload
-
-    new_employees: List[Dict[str, Any]] = []
-    moved_department_employees: List[Dict[str, Any]] = []
-    changed_employees: List[Dict[str, Any]] = []
-    errors: List[Dict[str, Any]] = []
-    unchanged_count = 0
-
-    for raw_emp in items:
-        raw_id = raw_emp.get("employee_id")
-        raw_name = f"{raw_emp.get('first_name', '')} {raw_emp.get('last_name', '')}".strip()
-        hr_department_name = (raw_emp.get("department") or {}).get("name")
-
-        try:
-            mapped = HREmployeeToIGAUser.model_validate(raw_emp)
-        except ValidationError as exc:
-            errors.append(
-                {
-                    "source_id": str(raw_id) if raw_id else None,
-                    "employee_number": raw_emp.get("employee_number"),
-                    "full_name": raw_name or None,
-                    "reason": str(exc),
-                }
-            )
-            continue
-
-        iga_user, event_type, changed_fields = await IGAUser.upsert_from_source(
+    if cycle_id is not None:
+        cycle = await JMLCycleRun.get_by_id(jml_db, cycle_id)
+    else:
+        cycle = await JMLCycleRun.start_cycle(
             db=jml_db,
-            **mapped.to_upsert_kwargs(source_system=source_system),
+            source_system=source_system,
+            cycle_type="HR_SYNC",
+            triggered_by=triggered_by,
         )
 
-        if iga_user is None or event_type == "ERROR":
-            errors.append(
-                {
-                    "source_id": str(mapped.source_id),
-                    "employee_number": raw_emp.get("employee_number"),
-                    "full_name": f"{mapped.first_name} {mapped.last_name}",
-                    "reason": "Database integrity error while upserting IGAUser",
-                }
+    try:
+        new_employees: List[Dict[str, Any]] = []
+        moved_department_employees: List[Dict[str, Any]] = []
+        changed_employees: List[Dict[str, Any]] = []
+        errors: List[Dict[str, Any]] = []
+        unchanged_count = 0
+
+        for raw_emp in employees:
+            raw_id = raw_emp.get("employee_id")
+            raw_name = f"{raw_emp.get('first_name', '')} {raw_emp.get('last_name', '')}".strip()
+            hr_department_name = (raw_emp.get("department") or {}).get("name")
+
+            try:
+                mapped = HREmployeeToIGAUser.model_validate(raw_emp)
+            except ValidationError as exc:
+                errors.append(
+                    {
+                        "source_id": str(raw_id) if raw_id else None,
+                        "employee_number": raw_emp.get("employee_number"),
+                        "full_name": raw_name or None,
+                        "reason": str(exc),
+                    }
+                )
+                continue
+
+            iga_user, event_type, changed_fields = await IGAUser.upsert_from_source(
+                db=jml_db,
+                **mapped.to_upsert_kwargs(source_system=source_system),
             )
-            continue
 
-        if event_type == "UNCHANGED":
-            unchanged_count += 1
-            continue
+            if iga_user is None or event_type == "ERROR":
+                errors.append(
+                    {
+                        "source_id": str(mapped.source_id),
+                        "employee_number": raw_emp.get("employee_number"),
+                        "full_name": f"{mapped.first_name} {mapped.last_name}",
+                        "reason": "Database integrity error while upserting IGAUser",
+                    }
+                )
+                continue
 
-        base_entry = {
-            "user_id": str(iga_user.user_id),
-            "source_id": iga_user.source_id,
-            "employee_number": raw_emp.get("employee_number"),
-            "username": iga_user.username,
-            "full_name": f"{iga_user.first_name} {iga_user.last_name}",
-            "email": iga_user.email,
-            "job_title": iga_user.job_title,
-            "department_id": str(iga_user.department_id) if iga_user.department_id else None,
-            "department_name": hr_department_name,
-            "employment_status": iga_user.employment_status.value,
+            if event_type == "UNCHANGED":
+                unchanged_count += 1
+                continue
+
+            base_entry = {
+                "user_id": str(iga_user.user_id),
+                "source_id": iga_user.source_id,
+                "employee_number": raw_emp.get("employee_number"),
+                "username": iga_user.username,
+                "full_name": f"{iga_user.first_name} {iga_user.last_name}",
+                "email": iga_user.email,
+                "job_title": iga_user.job_title,
+                "department_id": str(iga_user.department_id) if iga_user.department_id else None,
+                "department_name": hr_department_name,
+                "employment_status": iga_user.employment_status.value,
+            }
+
+            if event_type == "JOINER":
+                new_employees.append(
+                    {
+                        **base_entry,
+                        "start_date": iga_user.start_date.isoformat(),
+                    }
+                )
+            elif "department_id" in changed_fields:
+                dept_change = changed_fields["department_id"]
+                moved_department_employees.append(
+                    {
+                        **base_entry,
+                        "event_type": event_type,
+                        "previous_department_id": dept_change["old"],
+                        "new_department_id": dept_change["new"],
+                        "changed_fields": changed_fields,
+                    }
+                )
+            else:
+                changed_employees.append(
+                    {
+                        **base_entry,
+                        "event_type": event_type,
+                        "changed_fields": changed_fields,
+                    }
+                )
+
+        report = {
+            "cycle_id": str(cycle.cycle_id) if cycle else None,
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+            "source_system": source_system,
+            "statistics": {
+                "total_processed": len(employees),
+                "new": len(new_employees),
+                "moved_departments": len(moved_department_employees),
+                "changed": len(changed_employees),
+                "unchanged": unchanged_count,
+                "errors": len(errors),
+            },
+            "employees": {
+                "new": new_employees,
+                "moved_departments": moved_department_employees,
+                "changed": changed_employees,
+                "errors": errors,
+            },
         }
 
-        if event_type == "JOINER":
-            new_employees.append(
-                {
-                    **base_entry,
-                    "start_date": iga_user.start_date.isoformat(),
-                }
-            )
-        elif "department_id" in changed_fields:
-            dept_change = changed_fields["department_id"]
-            moved_department_employees.append(
-                {
-                    **base_entry,
-                    "event_type": event_type,
-                    "previous_department_id": dept_change["old"],
-                    "new_department_id": dept_change["new"],
-                    "changed_fields": changed_fields,
-                }
-            )
-        else:
-            changed_employees.append(
-                {
-                    **base_entry,
-                    "event_type": event_type,
-                    "changed_fields": changed_fields,
-                }
+        if cycle is not None:
+            await JMLCycleRun.complete_cycle(
+                db=jml_db,
+                cycle_id=cycle.cycle_id,
+                report=report,
             )
 
-    return {
-        "generated_at": datetime.now(timezone.utc).isoformat(),
-        "source_system": source_system,
-        "statistics": {
-            "total_processed": len(items),
-            "new": len(new_employees),
-            "moved_departments": len(moved_department_employees),
-            "changed": len(changed_employees),
-            "unchanged": unchanged_count,
-            "errors": len(errors),
-        },
-        "employees": {
-            "new": new_employees,
-            "moved_departments": moved_department_employees,
-            "changed": changed_employees,
-            "errors": errors,
-        },
-    }
+        return report
 
+    except Exception as exc:
+        await jml_db.rollback()
+        if cycle is not None:
+            await JMLCycleRun.fail_cycle(
+                db=jml_db,
+                cycle_id=cycle.cycle_id,
+                error_message=str(exc),
+            )
+        raise
 
 def print_sync_report(report: Dict[str, Any]) -> None:
     """Print a readable summary of the JML sync statistics and affected employees."""
@@ -279,14 +312,39 @@ async def fetch_all_hr_employees(
 
 
 async def main():
-    #Get the token for sign in
-    token = get_token()
-    print("ACCESS TOKEN", token)
-    all_employees = await fetch_all_hr_employees(token)
-    print("EMPLOYEE 1", json.dumps(all_employees["items"][0],indent=4))
     async with SessionLocal() as session:
-        jml_cycle_report = await sync_hr_employees_and_report(session,all_employees["items"])
-        print("JML CYCLE REPORT", jml_cycle_report)
+        cycle = await JMLCycleRun.start_cycle(
+            db=session,
+            source_system="HR_SYSTEM",
+            cycle_type="HR_SYNC",
+            triggered_by="SCHEDULER",
+        )
 
+        try:
+            # 1. Authenticate and fetch from HR API
+            token = get_token()
+            all_employees = await fetch_all_hr_employees(token)
+
+            if all_employees.get("items"):
+                print("EMPLOYEE 1", json.dumps(all_employees["items"][0], indent=4))
+
+            # 2. Ingest into IGAUser/IGAAudit and mark the cycle COMPLETED
+            jml_cycle_report = await sync_hr_employees_and_report(
+                jml_db=session,
+                employees=all_employees["items"],
+                cycle_id=cycle.cycle_id if cycle else None,
+            )
+            print_sync_report(jml_cycle_report)
+
+        except Exception as exc:
+            # 3. Record any token, network, or sync failure on the cycle row
+            await session.rollback()
+            if cycle is not None:
+                await JMLCycleRun.fail_cycle(
+                    db=session,
+                    cycle_id=cycle.cycle_id,
+                    error_message=str(exc),
+                )
+            raise
 if __name__ == "__main__":
     asyncio.run(main())

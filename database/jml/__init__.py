@@ -7,6 +7,7 @@ from .models.enums import (
 from .models.iga_audit import IGAAudit
 from .models.iga_provisioning import IGAProvisioning
 from .models.iga_user import IGAUser
+from .models.jml_cycle_run import JMLCycleRun
 
 __all__ = [
     "EmploymentStatus",
@@ -14,6 +15,7 @@ __all__ = [
     "IGAAudit",
     "IGAProvisioning",
     "IGAUser",
+    "JMLCycleRun",
     "ProvisioningAction",
     "SyncStatus",
 ]
